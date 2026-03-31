@@ -57,7 +57,7 @@ with st.sidebar.expander("❓ Robot Nasıl Çalışır?"):
 # --- 3. VERİ VE AI SİSTEMİ ---
 @st.cache_data
 def get_full_data(symbol, i):
-    p = "1y" if i in ["1d", "1h"] else "7d"
+  data = yf.download(hisse, period="max") # Tüm geçmişi çeker, en son saniyeye kadar zorlar.
     df = yf.download(symbol, period=p, interval=i, auto_adjust=True)
     if isinstance(df.columns, pd.MultiIndex): df.columns = df.columns.get_level_values(0)
     return df
