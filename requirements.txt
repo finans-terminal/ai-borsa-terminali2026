@@ -5,4 +5,4 @@ plotly
 scikit-learn
 pandas<2.2.0
 numpy<2.0.0
-streamlit-autorefresh
+streamlit-autorefresh==0.0.1
