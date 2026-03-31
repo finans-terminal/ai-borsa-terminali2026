@@ -55,14 +55,19 @@ with st.sidebar.expander("❓ Robot Nasıl Çalışır?"):
     st.info("Bu robot; RSI, EMA ve Hacim verilerini Random Forest algoritması ile işleyerek gelecekteki fiyat yönünü tahmin eder.")
 
 # --- 3. VERİ VE AI SİSTEMİ ---
-@st.cache_data
+@st.cache_data(ttl=3600)
 def get_full_data(symbol, i):
-
-data = yf.download(hisse, period="max") #  geçmişi çeker, en son saniyeye kadar zorlar.
-                                                df = yf.download(symbol, period=p, interval=i, auto_adjust=True)
-    if isinstance(df.columns, pd.MultiIndex): df.columns = df.columns.get_level_values(0)
+    # Bu satır (p) tam burada durmalı
+    p = "1y" if i in ["1d", "1h"] else "max"
+    
+    # Bu satır (df) bir üstteki p ile tam aynı hizada durmalı
+    df = yf.download(symbol, period=p, interval=i, auto_adjust=True)
+    
+    if not df.empty:
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
+    
     return df
-
 df = get_full_data(hisse_key, interval)
 
 if len(df) > 30:
