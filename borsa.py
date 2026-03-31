@@ -55,15 +55,11 @@ with st.sidebar.expander("❓ Robot Nasıl Çalışır?"):
     st.info("Bu robot; RSI, EMA ve Hacim verilerini Random Forest algoritması ile işleyerek gelecekteki fiyat yönünü tahmin eder.")
 
 # --- 3. VERİ VE AI SİSTEMİ ---
-@st.cache_data(ttl=600) # 10 dakikada bir yeniler, en taze veriyi kovalar
+@st.cache_data(ttl=60) # Önbelleği her 1 dakikada bir siler (En taze veriyi zorlar)
 def get_full_data(symbol, i):
-    # 31 Mart verisini kaçırmamak için '1y' yerine 'max' ve daha agresif bir çekim yapıyoruz
-    if i == "1d":
-        # Günlük veri bazen son günü eksik verir, o yüzden '1h' (saatlik) çekip birleştirebiliriz
-        # Ama en basit çözüm şimdilik periodu 'max' yapmaktır
-        df = yf.download(symbol, period="max", interval="1d", auto_adjust=True)
-    else:
-        df = yf.download(symbol, period="1mo", interval=i, auto_adjust=True)
+    # '1d' (Günlük) yerine '1h' (Saatlik) çekip manuel birleştirmek en sağlıklısıdır
+    # Ama şimdilik en güncel paket için şunu dene:
+    df = yf.download(symbol, period="5d", interval="1h", auto_adjust=True)
     
     if not df.empty:
         if isinstance(df.columns, pd.MultiIndex):
