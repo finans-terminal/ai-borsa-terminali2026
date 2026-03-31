@@ -34,13 +34,6 @@ def get_ticker_data():
 
 st.markdown(f'<marquee style="color: white; font-size: 16px; background: #1e2130; padding: 10px; border-radius: 5px;">{get_ticker_data()}</marquee>', unsafe_allow_html=True)
 
-# Üst Başlık ve Canlı Saat
-c_title, c_clock = st.columns([4, 1])
-with c_title:
-    st.title("🤖 AI Pro: Global Finans & Robot Terminali")
-with c_clock:
-    now = datetime.now().strftime("%H:%M:%S")
-    st.markdown(f"<h2 style='text-align: right; color: #00ff00;'>🕒 {now}</h2>", unsafe_allow_html=True)
 
 # --- 2. SOL PANEL (AYARLAR) ---
 st.sidebar.header("🕹️ Kontrol & Enstrüman")
