@@ -1,9 +1,4 @@
-import streamlit as st
-# Diğer kütüphanelerin altına şu satırı ekle:
-from streamlit_autorefresh import st_autorefresh
 
-# Sayfayı her 60 saniyede bir otomatik yenile (saat ve veriler güncellenir)
-count = st_autorefresh(interval=60000, limit=100, key="fizzbuzz")
 import streamlit as st
 import yfinance as yf
 import pandas_ta as ta
