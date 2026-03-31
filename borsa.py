@@ -55,16 +55,24 @@ with st.sidebar.expander("❓ Robot Nasıl Çalışır?"):
     st.info("Bu robot; RSI, EMA ve Hacim verilerini Random Forest algoritması ile işleyerek gelecekteki fiyat yönünü tahmin eder.")
 
 # --- 3. VERİ VE AI SİSTEMİ ---
-@st.cache_data(ttl=60) # Önbelleği her 1 dakikada bir siler (En taze veriyi zorlar)
+@st.cache_data(ttl=300) # 5 dakikada bir tazeler, boşlukları kapatmaya çalışır
 def get_full_data(symbol, i):
-    # '1d' (Günlük) yerine '1h' (Saatlik) çekip manuel birleştirmek en sağlıklısıdır
-    # Ama şimdilik en güncel paket için şunu dene:
-    df = yf.download(symbol, period="5d", interval="1h", auto_adjust=True)
+    # Ayrık mumları engellemek için periodu sabitliyoruz
+    p = "1mo" if i == "1h" else "1y"
+    
+    # Veriyi çekiyoruz
+    df = yf.download(symbol, period=p, interval=i, auto_adjust=True)
     
     if not df.empty:
+        # Sütun isimlerini temizle
         if isinstance(df.columns, pd.MultiIndex):
             df.columns = df.columns.get_level_values(0)
-    return df
+        
+        # AYRIK MUM TAMİRİ: Verisi olmayan (NaN) satırları siliyoruz
+        df.dropna(inplace=True)
+        
+        # Eğer borsa kapalıysa son geçerli veriyi gösterir
+        return df
 df = get_full_data(hisse_key, interval)
 
 if len(df) > 30:
