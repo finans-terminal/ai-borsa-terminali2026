@@ -3,4 +3,5 @@ yfinance
 pandas-ta
 plotly
 scikit-learn
-(Not: pandas_ta yerine pand
+pandas
+numpy
